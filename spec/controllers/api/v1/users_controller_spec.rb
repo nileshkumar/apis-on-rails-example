@@ -37,4 +37,24 @@ describe Api::V1::UsersController, type: :controller do
       expect(response_hash['errors']['email']).to include "can't be blank"
     end
   end
+
+  describe 'PATCH update' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'renders the updated user' do
+      patch :update, id: user.id, user: { email: 'newmail@example.com' }, format: :json
+      response_hash = JSON.parse(response.body)
+
+      expect(response_hash['email']).to eq 'newmail@example.com'
+      expect(response.status).to eq 200
+    end
+
+    it 'renders errors for invalid input' do
+      patch :update, id: user.id, user: { email: 'newmail' }, format: :json
+      response_hash = JSON.parse(response.body)
+
+      expect(response_hash).to have_key 'errors'
+      expect(response.status).to eq 422
+    end
+  end
 end
