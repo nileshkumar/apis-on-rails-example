@@ -41,6 +41,8 @@ describe Api::V1::UsersController, type: :controller do
   describe 'PATCH update' do
     let(:user) { FactoryGirl.create(:user) }
 
+    before { request.headers['Authorization'] = user.auth_token }
+
     it 'renders the updated user' do
       patch :update, id: user.id, user: { email: 'newmail@example.com' }, format: :json
       response_hash = JSON.parse(response.body)
@@ -62,8 +64,18 @@ describe Api::V1::UsersController, type: :controller do
     let(:user) { FactoryGirl.create(:user) }
 
     it 'deletes the user' do
+      request.headers['Authorization'] = user.auth_token
       delete :destroy, id: user.id, format: :json
       expect(response.status).to be 204
+    end
+
+    it 'renders error if not authorized' do
+      request.headers['Authorization'] = 'invalid-token'
+      delete :destroy, id: user.id, format: :json
+
+      res = JSON.parse(response.body)
+      expect(res['errors']).to eq 'Not authenticated'
+      expect(response.status).to be 401
     end
   end
 end
