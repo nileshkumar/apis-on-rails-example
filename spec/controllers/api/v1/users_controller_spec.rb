@@ -57,4 +57,13 @@ describe Api::V1::UsersController, type: :controller do
       expect(response.status).to eq 422
     end
   end
+
+  describe 'DELETE destroy' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'deletes the user' do
+      delete :destroy, id: user.id, format: :json
+      expect(response.status).to be 204
+    end
+  end
 end
