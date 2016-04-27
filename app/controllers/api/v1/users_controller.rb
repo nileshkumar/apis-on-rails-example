@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  before_filter :authenticate_with_token, only: [:destroy]
+  before_filter :authenticate_with_token, only: [:update, :destroy]
 
   respond_to :json
 
