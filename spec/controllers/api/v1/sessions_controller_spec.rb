@@ -21,4 +21,13 @@ describe Api::V1::SessionsController, type: :controller do
       expect(response.status).to eq 422
     end
   end
+
+  describe 'DELETE destroy' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'responds with 204' do
+      delete :destroy, id: user.auth_token
+      expect(response.status).to eq 204
+    end
+  end
 end
