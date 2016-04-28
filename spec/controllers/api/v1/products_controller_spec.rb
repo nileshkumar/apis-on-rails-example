@@ -20,7 +20,7 @@ describe Api::V1::ProductsController, type: :controller do
     it 'returns product information' do
       get :show, id: product.id
 
-      res = JSON.parse(response.body)
+      res = JSON.parse(response.body).fetch('product')
       expect(res['title']).to eq 'Product 42'
       expect(response.status).to eq 200
     end
