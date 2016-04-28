@@ -33,4 +33,18 @@ describe Authenticable do
       expect(res['errors']).to eq 'Not authenticated'
     end
   end
+
+  describe '#user_signed_in?' do
+    it 'is true when there is a user in session' do
+      allow(authentication).to receive(:current_user)
+        .and_return(user)
+      expect(authentication).to be_user_signed_in
+    end
+
+    it 'is false when there is no user' do
+      allow(authentication).to receive(:current_user)
+        .and_return(nil)
+      expect(authentication).to_not be_user_signed_in
+    end
+  end
 end
