@@ -10,7 +10,7 @@ describe Api::V1::UsersController, type: :controller do
 
     it 'returns user json' do
       get :show, id: user.id, format: :json
-      response_hash = JSON.parse(response.body)
+      response_hash = JSON.parse(response.body).fetch('user')
 
       expect(response_hash['email']).to eq user.email
       expect(response.status).to eq 200
@@ -23,7 +23,7 @@ describe Api::V1::UsersController, type: :controller do
 
     it 'renders the created user' do
       post :create, user: attrs, format: :json
-      response_hash = JSON.parse(response.body)
+      response_hash = JSON.parse(response.body).fetch('user')
 
       expect(response_hash['email']).to eq attrs[:email]
       expect(response.status).to eq 201
@@ -45,7 +45,7 @@ describe Api::V1::UsersController, type: :controller do
 
     it 'renders the updated user' do
       patch :update, id: user.id, user: { email: 'newmail@example.com' }, format: :json
-      response_hash = JSON.parse(response.body)
+      response_hash = JSON.parse(response.body).fetch('user')
 
       expect(response_hash['email']).to eq 'newmail@example.com'
       expect(response.status).to eq 200

@@ -6,7 +6,7 @@ describe Api::V1::SessionsController, type: :controller do
 
     it 'returns the user with auth token' do
       post :create, session: { email: user.email, password: '1234567890' }
-      res = JSON.parse(response.body)
+      res = JSON.parse(response.body).fetch('user')
       user.reload
 
       expect(res['auth_token']).to eq user.auth_token
