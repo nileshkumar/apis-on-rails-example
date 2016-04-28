@@ -9,10 +9,13 @@ describe Api::V1::UsersController, type: :controller do
     let(:user) { FactoryGirl.create(:user) }
 
     it 'returns user json' do
-      get :show, id: user.id, format: :json
-      response_hash = JSON.parse(response.body).fetch('user')
+      product = Product.create!(title: 'Test', price: 100, user: user)
 
-      expect(response_hash['email']).to eq user.email
+      get :show, id: user.id, format: :json
+      user_json = JSON.parse(response.body).fetch('user')
+
+      expect(user_json['email']).to eq user.email
+      expect(user_json['product_ids']).to include product.id
       expect(response.status).to eq 200
     end
   end
