@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     namespace :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :users, only: [:show, :create, :update, :destroy]
       resources :sessions, only: [:create, :destroy]
-      resources :products, only: [:show]
+      resources :products, only: [:index, :show]
     end
   end
 end
