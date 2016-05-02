@@ -18,4 +18,16 @@ describe Api::V1::OrdersController, type: :controller do
       expect(response.status).to eq 200
     end
   end
+
+  describe 'GET show' do
+    it 'returns the matching order' do
+      order = Order.create!(user: user, total: 100)
+      get :show, user_id: user.id, id: order.id, format: :json
+
+      order_json = JSON.parse(response.body)
+
+      expect(response.status).to eq 200
+      expect(order_json['id']).to eq order.id
+    end
+  end
 end
